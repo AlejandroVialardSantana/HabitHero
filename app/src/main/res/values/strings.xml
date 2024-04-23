@@ -10,4 +10,10 @@
     <string name="login_google">Iniciar con Google</string>
     <string name="no_account">¿No tienes cuenta?</string>
     <string name="sign_up_link">Regístrate</string>
+
+    <string name="sign_up">Registrarse</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="have_account">¿Ya tienes cuenta?</string>
+    <string name="login_link"><u>Inicia sesión</u></string>
 </resources>

@@ -1,5 +1,6 @@
 package com.avs.habithero.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
@@ -25,6 +26,11 @@ class LoginActivity: AppCompatActivity() {
             if (validateLogin(email, password)) {
                 authViewModel.signIn(email, password, ::onLoginSuccess, ::onLoginFailure)
             }
+        }
+
+        binding.signUpLink.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
 
         binding.backIcon.setOnClickListener {

@@ -17,12 +17,12 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    fun signUp(email: String, password: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+    fun signUp(email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 onSuccess()
             } else {
-                onFailure(task.exception?.message ?: "An unknown error occurred")
+                onFailure()
             }
         }
     }

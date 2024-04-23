@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.avs.habithero" />
-                  <option name="mobileSdkAppId" value="1:494646768591:android:4775eb67daf95261f058ba" />
-                  <option name="projectId" value="habithero-fbaf2" />
-                  <option name="projectNumber" value="494646768591" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
