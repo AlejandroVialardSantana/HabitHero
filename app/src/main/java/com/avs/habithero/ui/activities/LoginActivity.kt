@@ -63,6 +63,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun onLoginSuccess() {
         Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun onLoginFailure(error: String) {

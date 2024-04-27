@@ -18,4 +18,9 @@
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="have_account">¿Ya tienes cuenta?</string>
     <string name="login_link"><u>Inicia sesión</u></string>
+
+    <!-- Bottom Navigation -->
+    <string name="home">Inicio</string>
+    <string name="stats">Estadísticas</string>
+    <string name="settings">Ajustes</string>
 </resources>

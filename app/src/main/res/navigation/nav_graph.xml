@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeFragment">
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.avs.habithero.ui.fragments.FragmentHome"
+        android:label="homeFragment"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.avs.habithero.ui.fragments.FragmentSettings"
+        android:label="settingsFragment"
+        tools:layout="@layout/fragment_settings"/>
+
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.avs.habithero.ui.fragments.FragmentStats"
+        android:label="statsFragment"
+        tools:layout="@layout/fragment_settings"/>
+</navigation>
