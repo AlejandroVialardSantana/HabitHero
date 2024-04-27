@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.avs.habithero.databinding.ActivitySignUpBinding
+import com.avs.habithero.repository.AuthRepository
 import com.avs.habithero.viewmodel.AuthViewModel
 
 class SignUpActivity : AppCompatActivity() {
@@ -18,7 +19,8 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = AuthViewModel()
+        val authRepository = AuthRepository()
+        viewModel = AuthViewModel(authRepository)
 
         binding.signUpPageButton.setOnClickListener {
             val email = binding.emailRegisterInput.text.toString()
@@ -26,7 +28,14 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPassword = binding.confirmPasswordInput.text.toString()
 
             if(validateSignUp(email, password, confirmPassword)) {
-                viewModel.signUp(email, password, ::onSignUpSuccess, ::onSignUpFailure)
+                viewModel.signUp(email, password).observe(this) { result ->
+                    result.onSuccess {
+                        onSignUpSuccess()
+                    }
+                    result.onFailure { error ->
+                        onSignUpFailure(error.message ?: "An unknown error occurred")
+                    }
+                }
             }
         }
 
@@ -68,7 +77,7 @@ class SignUpActivity : AppCompatActivity() {
         Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()
     }
 
-    private fun onSignUpFailure() {
-        Toast.makeText(this, "Sign up failed", Toast.LENGTH_SHORT).show()
+    private fun onSignUpFailure(error: String) {
+        Toast.makeText(this, "Sign up failed: $error", Toast.LENGTH_SHORT).show()
     }
 }

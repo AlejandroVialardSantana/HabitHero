@@ -1,29 +1,21 @@
 package com.avs.habithero.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
+import com.avs.habithero.repository.AuthRepository
+import com.google.firebase.auth.AuthCredential
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
-    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    fun signIn(email: String, password: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onFailure(task.exception?.message ?: "An unknown error occurred")
-            }
-        }
+    fun signIn(email: String, password: String): LiveData<Result<Boolean>> {
+        return authRepository.signIn(email, password)
     }
 
-    fun signUp(email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onFailure()
-            }
-        }
+    fun signUp(email: String, password: String): LiveData<Result<Boolean>> {
+        return authRepository.signUp(email, password)
+    }
+
+    fun signUpWithGoogle(credential: AuthCredential): LiveData<Result<Boolean>> {
+        return authRepository.signUpWithGoogle(credential)
     }
 }
