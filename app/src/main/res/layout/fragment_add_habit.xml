@@ -6,25 +6,57 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/textViewHabitTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/habit_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
     <EditText
         android:id="@+id/editTextHabitTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_habit_name"
+        android:layout_marginTop="16dp"
+        android:hint="@string/habit_name"
         android:inputType="textCapWords"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewHabitTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewHabitType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/habit_type"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHabitTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
         android:id="@+id/spinnerHabitType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextHabitTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewHabitType"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewFrequencyLabel"
@@ -33,41 +65,107 @@
         android:layout_marginTop="16dp"
         android:text="@string/label_frequency"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerHabitType"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <SeekBar
-        android:id="@+id/seekBarFrequency"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:max="7"
-        android:progress="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewFrequencyLabel" />
-
-    <EditText
-        android:id="@+id/textViewDurationLabel"
-        android:layout_width="380dp"
-        android:layout_height="51dp"
-        android:hint="@string/duration"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/seekBarFrequency"
-        app:layout_constraintVertical_bias="0.081" />
+        app:layout_constraintTop_toBottomOf="@id/spinnerHabitType"
+        app:layout_constraintVertical_bias="0.027" />
+
+    <LinearLayout
+        android:id="@+id/checkboxContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:weightSum="7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewFrequencyLabel">
+
+        <CheckBox
+            android:id="@+id/checkboxMonday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/monday" />
+
+        <CheckBox
+            android:id="@+id/checkboxTuesday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/tuesday"
+            android:layout_weight="1"/>
+
+        <CheckBox
+            android:id="@+id/checkboxWednesday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/wednesday"
+            android:layout_weight="1"/>
+
+        <CheckBox
+            android:id="@+id/checkboxThursday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/thursday"
+            android:layout_weight="1"/>
+
+        <CheckBox
+            android:id="@+id/checkboxFriday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/friday"
+            android:layout_weight="1"/>
+
+        <CheckBox
+            android:id="@+id/checkboxSaturday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/saturday"
+            android:layout_weight="1"/>
+
+        <CheckBox
+            android:id="@+id/checkboxSunday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sunday" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextDurationLabel"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/duration"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewDurationLabel" />
+
+    <TextView
+        android:id="@+id/textViewDurationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/duration"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkboxContainer"
+        app:layout_constraintVertical_bias="0.041" />
 
     <Button
         android:id="@+id/buttonSaveHabit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="154dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="16dp"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewDurationLabel" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

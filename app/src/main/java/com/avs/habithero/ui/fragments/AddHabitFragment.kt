@@ -42,12 +42,25 @@ class AddHabitFragment: Fragment() {
         binding.spinnerHabitType.adapter = adapter
     }
 
+    private fun getSelectedDays(): List<Boolean> {
+        val days = mutableListOf<Boolean>()
+        days.add(binding.checkboxMonday.isChecked)
+        days.add(binding.checkboxTuesday.isChecked)
+        days.add(binding.checkboxWednesday.isChecked)
+        days.add(binding.checkboxThursday.isChecked)
+        days.add(binding.checkboxFriday.isChecked)
+        days.add(binding.checkboxSaturday.isChecked)
+        days.add(binding.checkboxSunday.isChecked)
+        return days
+    }
+
     private fun saveHabit() {
         val title = binding.editTextHabitTitle.text.toString()
         val type = binding.spinnerHabitType.selectedItem.toString()
-        val frequency = binding.seekBarFrequency.progress.toString()
-        val duration = binding.textViewDurationLabel.text.toString().toInt()
-        val habit = Habit(null, title, type, frequency.toInt(), duration, false)
+        val selectedDays = getSelectedDays()
+        val frequency = selectedDays.filter { it }.size
+        val duration = binding.editTextDurationLabel.text.toString().toInt()
+        val habit = Habit(null, title, type, selectedDays, frequency, duration, false)
         viewModel.addHabit(habit)
         findNavController().popBackStack()
     }

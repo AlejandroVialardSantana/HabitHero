@@ -37,9 +37,18 @@
     <string name="select_language">Selecciona idioma</string>
 
     <!-- Add Habit Fragment -->
-    <string name="hint_habit_name">Nombre del hábito</string>
-    <string name="hint_habit_description">Descripción del hábito</string>
+    <string name="habit_name">Nombre del hábito</string>
+    <string name="habit_type">Tipo de hábito</string>
     <string name="label_frequency">Frecuencia</string>
     <string name="duration">Duración</string>
     <string name="save">Guardar</string>
+
+    <!-- Habit Days -->
+    <string name="monday">L</string>
+    <string name="tuesday">M</string>
+    <string name="wednesday">Mi</string>
+    <string name="thursday">J</string>
+    <string name="friday">V</string>
+    <string name="saturday">S</string>
+    <string name="sunday">D</string>
 </resources>
