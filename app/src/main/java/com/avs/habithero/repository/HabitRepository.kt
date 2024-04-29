@@ -8,19 +8,24 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class HabitRepository {
     private val db = FirebaseFirestore.getInstance()
+    private val _habits = MutableLiveData<List<Habit>>()
+    val habits: LiveData<List<Habit>> get() = _habits
 
-    fun getHabits(userId: String): LiveData<List<Habit>> {
-        val mutableData = MutableLiveData<List<Habit>>()
+    fun getHabits(userId: String) {
         db.collection("users").document(userId).collection("habits")
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val habits = snapshot.toObjects(Habit::class.java)
-                mutableData.value = habits
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w("HabitRepository", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val habits = snapshot.toObjects(Habit::class.java)
+                    _habits.postValue(habits)
+                } else {
+                    Log.d("HabitRepository", "Current data: null")
+                }
             }
-            .addOnFailureListener { e ->
-                Log.w("HabitRepository", "Error getting documents.", e)
-            }
-        return mutableData
     }
 
     fun addHabit(habit: Habit, userId: String) {
@@ -35,5 +40,24 @@ class HabitRepository {
                 Log.w("HabitRepository", "Error adding document", e)
             }
     }
+
+    fun deleteHabit(habitId: String, userId: String) {
+        if (habitId.isNotBlank()) {
+            db.collection("users").document(userId).collection("habits").document(habitId)
+                .delete()
+                .addOnSuccessListener {
+                    val updatedHabits = _habits.value?.toMutableList() ?: mutableListOf()
+                    updatedHabits.removeIf { it.habitId == habitId }
+                    _habits.value = updatedHabits
+                    Log.d("HabitRepository", "DocumentSnapshot successfully deleted!")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("HabitRepository", "Error deleting document", e)
+                }
+        } else {
+            Log.e("HabitRepository", "Error: Habit ID is blank or null")
+        }
+    }
+
 
 }

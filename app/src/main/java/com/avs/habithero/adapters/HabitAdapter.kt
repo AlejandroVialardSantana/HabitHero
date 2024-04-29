@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avs.habithero.R
 import com.avs.habithero.model.Habit
 
-class HabitAdapter(private var habits: List<Habit>) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+class HabitAdapter(private var habits: MutableList<Habit>,
+                    private val onEditClicked: (Habit) -> Unit,
+                    private val onDeleteClicked: (Habit, Int) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     class HabitViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.habitName)
         val habitTime: TextView = view.findViewById(R.id.habitTime)
@@ -26,6 +28,14 @@ class HabitAdapter(private var habits: List<Habit>) : RecyclerView.Adapter<Habit
         holder.name.text = habit.title
         holder.habitTime.text = habit.duration.toString()
         holder.checkBoxCompleted.isChecked = habit.isCompleted
+
+        holder.itemView.findViewById<View>(R.id.editHabit).setOnClickListener {
+            onEditClicked(habit)
+        }
+
+        holder.itemView.findViewById<View>(R.id.deleteHabit).setOnClickListener {
+            onDeleteClicked(habit, position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -33,7 +43,13 @@ class HabitAdapter(private var habits: List<Habit>) : RecyclerView.Adapter<Habit
     }
 
     fun updateData(newHabits: List<Habit>) {
-        habits = newHabits
+        habits.clear()
+        habits.addAll(newHabits)
         notifyDataSetChanged()
+    }
+
+    fun removeItem(position: Int) {
+        habits.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

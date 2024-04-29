@@ -1,6 +1,7 @@
 package com.avs.habithero.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,16 @@ class HomeFragment: Fragment() {
     }
 
     private fun setupRecyclerView() {
-        habitAdapter = HabitAdapter(listOf())
+        habitAdapter = HabitAdapter(
+            mutableListOf(),
+            onEditClicked = {
+                Log.d("HomeFragment", "Edit clicked")
+            },
+            onDeleteClicked = { habit, position ->
+                viewModel.deleteHabit(habit.habitId?:"")
+                habitAdapter.removeItem(position)
+            }
+        )
         binding.habitsRecyclerView.adapter = habitAdapter
         binding.habitsRecyclerView.layoutManager = LinearLayoutManager(context)
     }

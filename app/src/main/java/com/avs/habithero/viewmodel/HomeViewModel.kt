@@ -9,9 +9,17 @@ import com.avs.habithero.repository.HabitRepository
 class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() {
 
     private val userId = AuthRepository().getCurrentUserId()
-    val habits: LiveData<List<Habit>> = habitRepository.getHabits(userId)
+    val habits: LiveData<List<Habit>> = habitRepository.habits
+
+    init {
+        habitRepository.getHabits(userId)
+    }
 
     fun addHabit(habit: Habit) {
         habitRepository.addHabit(habit, userId)
+    }
+
+    fun deleteHabit(habitId: String) {
+        habitRepository.deleteHabit(habitId, userId)
     }
 }
