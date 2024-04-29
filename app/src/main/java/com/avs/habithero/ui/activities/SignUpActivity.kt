@@ -26,9 +26,10 @@ class SignUpActivity : AppCompatActivity() {
             val email = binding.emailRegisterInput.text.toString()
             val password = binding.passwordRegisterInput.text.toString()
             val confirmPassword = binding.confirmPasswordInput.text.toString()
+            val username = binding.usernameRegisterInput.text.toString()
 
             if(validateSignUp(email, password, confirmPassword)) {
-                viewModel.signUp(email, password).observe(this) { result ->
+                viewModel.signUp(email, password, username).observe(this) { result ->
                     result.onSuccess {
                         onSignUpSuccess()
                     }
@@ -75,6 +76,9 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun onSignUpSuccess() {
         Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun onSignUpFailure(error: String) {

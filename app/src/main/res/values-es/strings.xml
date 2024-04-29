@@ -24,4 +24,8 @@
     <string name="home">Inicio</string>
     <string name="stats">Estadísticas</string>
     <string name="settings">Ajustes</string>
+
+    <!-- Home Fragment -->
+    <string name="welcome_message">¡Bienvenido a HabitHero!</string>
+    <string name="sub_welcome_message">Comienza añadiendo los hábitos que quieras cumplir</string>
 </resources>

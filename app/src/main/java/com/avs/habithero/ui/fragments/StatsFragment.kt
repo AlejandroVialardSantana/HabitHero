@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.avs.habithero.databinding.FragmentStatsBinding
 
-class FragmentStats: Fragment() {
+class StatsFragment: Fragment() {
 
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
