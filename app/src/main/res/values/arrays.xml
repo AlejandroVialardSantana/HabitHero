@@ -8,4 +8,11 @@
         <item>es</item>
         <item>en</item>
     </string-array>
+
+    <string-array name="habit_types">
+        <item>Deporte</item>
+        <item>Estudio</item>
+        <item>Lectura</item>
+        <item>Otro</item>
+    </string-array>
 </resources>

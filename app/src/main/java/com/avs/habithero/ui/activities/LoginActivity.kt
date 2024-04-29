@@ -18,6 +18,7 @@ class LoginActivity : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: Inyectar repositorio mediante un factory
         val authRepository = AuthRepository()
         authViewModel = AuthViewModel(authRepository)
 
