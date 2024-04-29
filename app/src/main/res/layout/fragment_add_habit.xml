@@ -20,39 +20,46 @@
         android:id="@+id/spinnerHabitType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/editTextHabitTitle"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/editTextHabitTitle" />
 
     <TextView
         android:id="@+id/textViewFrequencyLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/label_frequency"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerHabitType"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintVertical_bias="0.0" />
 
     <SeekBar
         android:id="@+id/seekBarFrequency"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:max="7"
         android:progress="3"
-        app:layout_constraintTop_toBottomOf="@id/textViewFrequencyLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/textViewFrequencyLabel" />
 
     <EditText
         android:id="@+id/textViewDurationLabel"
         android:layout_width="380dp"
         android:layout_height="51dp"
-        android:text="@string/duration"
+        android:hint="@string/duration"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seekBarFrequency"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.081" />
 
     <Button
         android:id="@+id/buttonSaveHabit"
