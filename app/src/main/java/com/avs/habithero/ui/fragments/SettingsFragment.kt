@@ -1,15 +1,21 @@
 package com.avs.habithero.ui.fragments
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.avs.habithero.R
 import com.avs.habithero.databinding.FragmentSettingsBinding
 import com.avs.habithero.repository.AuthRepository
+import com.avs.habithero.ui.activities.HomeActivity
 import com.avs.habithero.ui.activities.MainActivity
 import com.avs.habithero.viewmodel.AuthViewModel
+import java.util.Locale
 
 class SettingsFragment: Fragment() {
 
@@ -26,6 +32,11 @@ class SettingsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.changeLanguage.setOnClickListener {
+            changeLanguage()
+        }
+
         binding.signOut.setOnClickListener {
             authViewModel.signOut()
             val intent = Intent(requireContext(), MainActivity::class.java).apply {
@@ -38,5 +49,37 @@ class SettingsFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun changeLanguage() {
+        val languages = resources.getStringArray(R.array.languages)
+        val languageCodes = resources.getStringArray(R.array.language_codes)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.select_language))
+        builder.setSingleChoiceItems(languages, -1) { dialog, which ->
+            setLocale(languageCodes[which])
+            dialog.dismiss()
+            restartActivity()
+        }
+        builder.create().show()
+    }
+
+    private fun setLocale(languageCode: String) {
+        savePreferences(languageCode)
+    }
+
+    private fun savePreferences(languageCode: String) {
+        val sharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("My_Lang", languageCode)
+            apply()
+        }
+    }
+
+    private fun restartActivity() {
+        val intent = Intent(requireContext(), HomeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
     }
 }

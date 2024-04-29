@@ -1,15 +1,13 @@
 package com.avs.habithero.ui.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
 import com.avs.habithero.R
 import com.avs.habithero.databinding.ActivityHomeBinding
-import com.avs.habithero.databinding.ActivityLoginBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class HomeActivity: AppCompatActivity() {
+class HomeActivity: BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
 

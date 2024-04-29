@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">HabitHero</string>
+
+    <string name="client_id">494646768591-vsg3e14dk3gcv8ai5j4q0nfmk3c38ph4.apps.googleusercontent.com</string>
+
+    <string name="login">LogIn</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="change_text"><u>Change</u></string>
+    <string name="or">Or</string>
+    <string name="login_google">LogIn with Google</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="sign_up_link">Sign Up</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="login_link"><u>LogIn</u></string>
+
+    <!-- Bottom Navigation -->
+    <string name="home">Home</string>
+    <string name="stats">Stats</string>
+    <string name="settings">Settings</string>
+
+    <!-- Home Fragment -->
+    <string name="welcome_message">Welcome to HabitHero!</string>
+    <string name="sub_welcome_message">Start by adding the habits you want to fulfill</string>
+
+    <!-- Settings Fragment -->
+    <string name="change_language">Change language</string>
+    <string name="sign_out">Sign out</string>
+
+    <!-- Language Dialog -->
+    <string name="select_language">Select language</string>
+
+    <!-- Stats Fragment -->
+
+</resources>

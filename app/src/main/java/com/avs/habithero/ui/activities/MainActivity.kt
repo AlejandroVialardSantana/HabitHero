@@ -2,12 +2,11 @@ package com.avs.habithero.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.avs.habithero.databinding.ActivityMainBinding
 import com.avs.habithero.repository.AuthRepository
 import com.avs.habithero.viewmodel.AuthViewModel
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val authRepository = AuthRepository()
@@ -15,6 +14,7 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

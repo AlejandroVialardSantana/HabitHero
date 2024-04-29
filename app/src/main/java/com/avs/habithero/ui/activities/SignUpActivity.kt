@@ -4,12 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.avs.habithero.databinding.ActivitySignUpBinding
 import com.avs.habithero.repository.AuthRepository
 import com.avs.habithero.viewmodel.AuthViewModel
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var viewModel: AuthViewModel
