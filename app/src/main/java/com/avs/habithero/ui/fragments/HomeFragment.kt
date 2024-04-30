@@ -33,7 +33,8 @@ class HomeFragment: Fragment() {
         observeHabits()
 
         binding.addHabit.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addHabitFragment)
+            val action = HomeFragmentDirections.actionHomeFragmentToAddHabitFragment(null)
+            findNavController().navigate(action)
         }
     }
 
@@ -53,7 +54,8 @@ class HomeFragment: Fragment() {
         habitAdapter = HabitAdapter(
             mutableListOf(),
             onEditClicked = {
-                Log.d("HomeFragment", "Edit clicked")
+                val action = HomeFragmentDirections.actionHomeFragmentToAddHabitFragment(it.habitId)
+                findNavController().navigate(action)
             },
             onDeleteClicked = { habit, position ->
                 viewModel.deleteHabit(habit.habitId?:"")

@@ -15,4 +15,11 @@
         <item>Lectura</item>
         <item>Otro</item>
     </string-array>
+
+    <string-array name="habit_frequency">
+        <item>Diariamente</item>
+        <item>Semanalmente</item>
+        <item>Mensualmente</item>
+        <item>Personalizado</item>
+    </string-array>
 </resources>

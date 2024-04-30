@@ -22,4 +22,13 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
     fun deleteHabit(habitId: String) {
         habitRepository.deleteHabit(habitId, userId)
     }
+
+    fun updateHabit(habit: Habit) {
+        habitRepository.updateHabit(habit, userId)
+    }
+
+    fun getHabitById(habitId: String): LiveData<Habit?> {
+        return habitRepository.getHabitById(habitId, userId)
+    }
+
 }

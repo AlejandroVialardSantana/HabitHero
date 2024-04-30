@@ -59,5 +59,33 @@ class HabitRepository {
         }
     }
 
+    fun updateHabit(habit: Habit, userId: String) {
+        if (habit.habitId != null) {
+            db.collection("users").document(userId).collection("habits").document(habit.habitId!!)
+                .set(habit)
+                .addOnSuccessListener {
+                    Log.d("HabitRepository", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("HabitRepository", "Error updating document", e)
+                }
+        } else {
+            Log.e("HabitRepository", "Error: Habit ID is null")
+        }
+    }
 
+    fun getHabitById(habitId: String, userId: String): LiveData<Habit?> {
+        val habitLiveData = MutableLiveData<Habit?>()
+        db.collection("users").document(userId).collection("habits").document(habitId)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val habit = documentSnapshot.toObject(Habit::class.java)
+                habitLiveData.postValue(habit)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("HabitRepository", "Error loading habit", exception)
+                habitLiveData.postValue(null)
+            }
+        return habitLiveData
+    }
 }
