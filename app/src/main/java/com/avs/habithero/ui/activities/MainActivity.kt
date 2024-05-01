@@ -3,7 +3,7 @@ package com.avs.habithero.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import com.avs.habithero.databinding.ActivityMainBinding
-import com.avs.habithero.repository.AuthRepository
+import com.avs.habithero.repositories.AuthRepository
 import com.avs.habithero.viewmodel.AuthViewModel
 
 class MainActivity: BaseActivity() {

@@ -116,16 +116,40 @@
             android:text="@string/sunday" />
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/textViewNotificationTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/notification_time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkboxContainer"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TimePicker
+        android:id="@+id/timePickerNotification"
+        android:layout_width="266dp"
+        android:layout_height="118dp"
+        android:layout_marginTop="16dp"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewNotificationTime" />
+
     <EditText
         android:id="@+id/editTextDurationLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/duration"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/checkboxContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/timePickerNotification" />
 
     <Button
         android:id="@+id/buttonSaveHabit"

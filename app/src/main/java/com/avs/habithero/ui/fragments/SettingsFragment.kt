@@ -3,7 +3,6 @@ package com.avs.habithero.ui.fragments
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.avs.habithero.R
 import com.avs.habithero.databinding.FragmentSettingsBinding
-import com.avs.habithero.repository.AuthRepository
+import com.avs.habithero.repositories.AuthRepository
 import com.avs.habithero.ui.activities.HomeActivity
 import com.avs.habithero.ui.activities.MainActivity
 import com.avs.habithero.viewmodel.AuthViewModel
-import java.util.Locale
 
 class SettingsFragment: Fragment() {
 

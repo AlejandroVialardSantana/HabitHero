@@ -1,4 +1,4 @@
-package com.avs.habithero.model
+package com.avs.habithero.models
 
 data class User(
     val userId: String,

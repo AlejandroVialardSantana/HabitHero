@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.habithero.R
-import com.avs.habithero.model.Habit
+import com.avs.habithero.models.Habit
 
 class HabitAdapter(private var habits: MutableList<Habit>,
                     private val onEditClicked: (Habit) -> Unit,

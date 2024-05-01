@@ -1,4 +1,4 @@
-package com.avs.habithero.model
+package com.avs.habithero.models
 
 data class Habit(
     var habitId: String? = null,

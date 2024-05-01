@@ -1,17 +1,15 @@
 package com.avs.habithero.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.avs.habithero.R
 import com.avs.habithero.adapters.HabitAdapter
 import com.avs.habithero.databinding.FragmentHomeBinding
-import com.avs.habithero.repository.HabitRepository
+import com.avs.habithero.repositories.HabitRepository
 import com.avs.habithero.viewmodel.HomeViewModel
 
 class HomeFragment: Fragment() {

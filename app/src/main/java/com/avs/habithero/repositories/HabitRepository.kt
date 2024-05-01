@@ -1,9 +1,9 @@
-package com.avs.habithero.repository
+package com.avs.habithero.repositories
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.avs.habithero.model.Habit
+import com.avs.habithero.models.Habit
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HabitRepository {

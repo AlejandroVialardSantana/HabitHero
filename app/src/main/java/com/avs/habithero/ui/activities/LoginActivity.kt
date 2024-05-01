@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import com.avs.habithero.databinding.ActivityLoginBinding
-import com.avs.habithero.repository.AuthRepository
+import com.avs.habithero.repositories.AuthRepository
 import com.avs.habithero.viewmodel.AuthViewModel
 
 class LoginActivity : BaseActivity() {

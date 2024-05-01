@@ -42,6 +42,7 @@
     <string name="habit_type">Habit type</string>
     <string name="label_frequency">Frequency</string>
     <string name="duration">Duration</string>
+    <string name="notification_time">Notification time</string>
     <string name="save">Save</string>
 
     <!-- Habit Days -->

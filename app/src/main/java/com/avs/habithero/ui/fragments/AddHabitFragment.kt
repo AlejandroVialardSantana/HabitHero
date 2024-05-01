@@ -2,7 +2,6 @@ package com.avs.habithero.ui.fragments
 
 import android.R
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,17 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.avs.habithero.databinding.FragmentAddHabitBinding
-import com.avs.habithero.model.Habit
-import com.avs.habithero.repository.HabitRepository
+import com.avs.habithero.models.Habit
+import com.avs.habithero.repositories.HabitRepository
 import com.avs.habithero.viewmodel.HomeViewModel
 import android.widget.AdapterView
-import java.util.Calendar
+import com.avs.habithero.ui.activities.HomeActivity
 
 class AddHabitFragment: Fragment() {
+
+    interface CalendarActionListener {
+        fun onAddEventToCalendar(habit: Habit)
+    }
 
     private var _binding: FragmentAddHabitBinding? = null
     private val binding get() = _binding!!
@@ -35,6 +38,7 @@ class AddHabitFragment: Fragment() {
 
         initializeTypesSpinner()
         initializeFrequencySpinner()
+        setupTimePicker()
 
         habitId?.let { id ->
             viewModel.getHabitById(id).observe(viewLifecycleOwner) { habit ->
@@ -46,7 +50,9 @@ class AddHabitFragment: Fragment() {
 
         binding.buttonSaveHabit.setOnClickListener {
             val isUpdate = habitId != null
-            addOrUpdateHabit(isUpdate)
+            val habit = addOrUpdateHabit(isUpdate)
+            (activity as? HomeActivity)?.onAddEventToCalendar(habit)
+            findNavController().popBackStack()
         }
     }
 
@@ -55,6 +61,12 @@ class AddHabitFragment: Fragment() {
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, types)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerHabitType.adapter = adapter
+    }
+
+    private fun setupTimePicker() {
+        binding.timePickerNotification.setIs24HourView(true)
+        binding.timePickerNotification.hour = 8
+        binding.timePickerNotification.minute = 0
     }
 
     private fun getSelectedDays(): List<Boolean> {
@@ -92,13 +104,16 @@ class AddHabitFragment: Fragment() {
         }
     }
 
-    private fun addOrUpdateHabit(isUpdate: Boolean) {
+    private fun addOrUpdateHabit(isUpdate: Boolean): Habit {
         val title = binding.editTextHabitTitle.text.toString()
         val type = binding.spinnerHabitType.selectedItem.toString()
         val frequencyType = binding.spinnerFrequencyType.selectedItem.toString()
         val selectedDays = getSelectedDays()
         val duration = binding.editTextDurationLabel.text.toString().toInt()
-        val notificationTimes = listOf<String>()
+        val hour = binding.timePickerNotification.hour
+        val minute = binding.timePickerNotification.minute
+        val timeString = String.format("%02d:%02d", hour, minute)
+        val notificationTimes = listOf(timeString)
 
         val habit = Habit(
             habitId = if (isUpdate) habitId else null,
@@ -112,12 +127,12 @@ class AddHabitFragment: Fragment() {
         )
 
         if (isUpdate) {
-            viewModel.updateHabit(habit)
+            viewModel.updateHabit(habit, requireContext())
         } else {
-            viewModel.addHabit(habit)
+            viewModel.addHabit(habit, requireContext())
         }
 
-        findNavController().popBackStack()
+        return habit
     }
 
     private fun loadHabitData(habit: Habit) {
@@ -127,6 +142,8 @@ class AddHabitFragment: Fragment() {
         val frequencyIndex = resources.getStringArray(com.avs.habithero.R.array.habit_frequency).indexOf(habit.frequencyType)
         binding.spinnerFrequencyType.setSelection(frequencyIndex)
         binding.editTextDurationLabel.setText(habit.duration.toString())
+        binding.timePickerNotification.hour = habit.notificationTimes[0].split(":")[0].toInt()
+        binding.timePickerNotification.minute = habit.notificationTimes[0].split(":")[1].toInt()
         if (habit.frequencyType != "Diariamente") {
             binding.checkboxMonday.isChecked = habit.selectedDays[0]
             binding.checkboxTuesday.isChecked = habit.selectedDays[1]

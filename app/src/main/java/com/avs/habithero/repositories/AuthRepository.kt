@@ -1,8 +1,8 @@
-package com.avs.habithero.repository
+package com.avs.habithero.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.avs.habithero.model.User
+import com.avs.habithero.models.User
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -2,7 +2,7 @@ package com.avs.habithero.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.avs.habithero.repository.AuthRepository
+import com.avs.habithero.repositories.AuthRepository
 import com.google.firebase.auth.AuthCredential
 
 class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
