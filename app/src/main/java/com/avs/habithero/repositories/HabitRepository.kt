@@ -28,16 +28,23 @@ class HabitRepository {
             }
     }
 
-    fun addHabit(habit: Habit, userId: String) {
+    fun addHabit(habit: Habit, userId: String, callback: (String) -> Unit) {
         db.collection("users").document(userId).collection("habits")
             .add(habit)
             .addOnSuccessListener { documentReference ->
                 db.collection("users").document(userId).collection("habits")
                     .document(documentReference.id)
                     .update("habitId", documentReference.id)
-            }
-            .addOnFailureListener { e ->
-                Log.w("HabitRepository", "Error adding document", e)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            callback(documentReference.id)
+                        } else {
+                            Log.e("HabitRepository", "Error updating document ID", it.exception)
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("HabitRepository", "Error adding document", e)
+                    }
             }
     }
 

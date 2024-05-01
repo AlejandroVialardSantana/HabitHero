@@ -14,7 +14,7 @@ import com.avs.habithero.receivers.AlarmReceiver
 import com.avs.habithero.repositories.AuthRepository
 import com.avs.habithero.repositories.HabitRepository
 import java.util.Calendar
-import java.util.TimeZone
+import kotlin.math.abs
 
 class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() {
 
@@ -26,9 +26,12 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
     }
 
     fun addHabit(habit: Habit, context: Context) {
-        habitRepository.addHabit(habit, userId)
-        scheduleAlarmForHabit(habit, context)
-        addEventToCalendar(context, habit)
+        habitRepository.addHabit(habit, userId) { habitId ->
+            habit.habitId = habitId
+            scheduleAlarmForHabit(habit, context)
+            // addEventToCalendar(context, habit)
+            saveAlarmDetails(context, habit)
+        }
     }
 
     fun deleteHabit(habitId: String) {
@@ -38,7 +41,8 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
     fun updateHabit(habit: Habit, context: Context) {
         habitRepository.updateHabit(habit, userId)
         scheduleAlarmForHabit(habit, context)
-        addEventToCalendar(context, habit)
+        // addEventToCalendar(context, habit)
+        saveAlarmDetails(context, habit)
     }
 
     fun getHabitById(habitId: String): LiveData<Habit?> {
@@ -56,58 +60,50 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
 
             habit.selectedDays.forEachIndexed { index, isSelected ->
                 if (isSelected) {
-                    val calendar = Calendar.getInstance()  // Usa la zona horaria local
+                    val calendar = Calendar.getInstance()
                     calendar.set(Calendar.HOUR_OF_DAY, hour)
                     calendar.set(Calendar.MINUTE, minute)
                     calendar.set(Calendar.SECOND, 0)
 
-                    Log.d("HomeViewModel", "Current time: ${now.time}")
-                    Log.d("HomeViewModel", "Selected days: ${habit.selectedDays} and index: $index")
-
                     val dayOfWeek = index + 2
-                    Log.d("HomeViewModel", "Day of week: $dayOfWeek")
                     calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek)
 
                     if (calendar.before(now)) {
                         calendar.add(Calendar.WEEK_OF_YEAR, 1)
                     }
 
-                    val requestCode = habit.hashCode() * 100 + index  // Ejemplo de código de solicitud único
+
+                    val requestCode = abs((habit.habitId.hashCode() * 100 + index))
                     val intent = Intent(context, AlarmReceiver::class.java).apply {
                         putExtra("habit_title", habit.title)
                     }
                     val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    Log.d("HomeViewModel", "Scheduling alarm for ${habit.habitId} at day $dayOfWeek with time $time with requestCode $requestCode")
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-                    Log.d("HomeViewModel", "Alarm scheduled for ${habit.title} at ${calendar.time} with requestCode $requestCode")
                 }
             }
         }
     }
 
-    private fun addEventToCalendar(context: Context, habit: Habit) {
-        val startTime = Calendar.getInstance()
+    private fun saveAlarmDetails(context: Context, habit: Habit) {
+        val sharedPreferences = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
 
-        val endTime = Calendar.getInstance().apply {
-            add(Calendar.HOUR, habit.duration)
+        sharedPreferences.all.keys.filter { it.startsWith("habit_${habit.habitId}_time_") }.forEach {
+            editor.remove(it)
         }
 
-        Log.d("HomeViewModel", "Adding event to calendar: ${habit.title} from ${startTime.time} to ${endTime.time}")
-
-        val intent = Intent(Intent.ACTION_INSERT).apply {
-            data = CalendarContract.Events.CONTENT_URI
-            putExtra(CalendarContract.Events.TITLE, habit.title)
-            putExtra(CalendarContract.Events.EVENT_LOCATION, "Home")
-            putExtra(CalendarContract.Events.DESCRIPTION, "Scheduled via HabitHero app.")
-            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.timeInMillis)
-            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)  // Importante cuando se llama fuera de un contexto de actividad
+        habit.selectedDays.forEachIndexed { index, isSelected ->
+            if (isSelected) {
+                habit.notificationTimes.forEach { time ->
+                    val dayOfWeek = index + 2
+                    val key = "habit_${habit.habitId}_time_${dayOfWeek}"
+                    val keyTitle = "habit_${habit.habitId}_title_$dayOfWeek"
+                    editor.putString(key, time)
+                    Log.d("HomeViewModel", "Saving alarm for ${habit.habitId} at day $dayOfWeek with time $time")
+                }
+            }
         }
-
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
-        } else {
-            // Log or handle case where no app can handle the intent
-            Log.e("HomeViewModel", "No app can handle the intent")
-        }
+        editor.apply()
     }
 }
