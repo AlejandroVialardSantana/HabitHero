@@ -100,6 +100,7 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
                     val key = "habit_${habit.habitId}_time_${dayOfWeek}"
                     val keyTitle = "habit_${habit.habitId}_title_$dayOfWeek"
                     editor.putString(key, time)
+                    editor.putString(keyTitle, habit.title)
                     Log.d("HomeViewModel", "Saving alarm for ${habit.habitId} at day $dayOfWeek with time $time")
                 }
             }

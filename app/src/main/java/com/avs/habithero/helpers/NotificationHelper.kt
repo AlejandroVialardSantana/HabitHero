@@ -57,9 +57,13 @@ object NotificationHelper {
     }
 
     private fun scheduleAlarmFromPreferences(context: Context, habitId: String, dayIndex: Int, time: String) {
+        val sharedPreferences = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
+        val title = sharedPreferences.getString("habit_" + habitId + "_title_" + dayIndex, "Reminder");
+
         val parts = time.split(":")
         val hour = parts[0].toInt()
         val minute = parts[1].toInt()
+        val now = Calendar.getInstance()
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
@@ -67,9 +71,13 @@ object NotificationHelper {
             set(Calendar.DAY_OF_WEEK, dayIndex + 2)
         }
 
+        if (calendar.before(now)) {
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+        }
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("habit_id", habitId)
+            putExtra("habit_title", title)
         }
         val requestCode = abs((habitId.hashCode() * 100 + (dayIndex - 2)))
         val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
