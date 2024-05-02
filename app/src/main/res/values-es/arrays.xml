@@ -13,6 +13,8 @@
         <item>Deporte</item>
         <item>Estudio</item>
         <item>Lectura</item>
+        <item>Trabajo</item>
+        <item>Música</item>
         <item>Otro</item>
     </string-array>
 

@@ -24,6 +24,8 @@ object NotificationHelper {
             val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val channel = NotificationChannel(channelId, "Habit Reminders", NotificationManager.IMPORTANCE_HIGH).apply {
                 setSound(soundUri, AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).setUsage(AudioAttributes.USAGE_NOTIFICATION).build())
+                enableVibration(true)
+                vibrationPattern = longArrayOf(1000, 1000, 1000, 1000, 1000)
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -33,6 +35,8 @@ object NotificationHelper {
             .setContentText("Time for your habit: $habitTitle")
             .setSmallIcon(R.drawable.ic_logo)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setAutoCancel(true)
+            .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
