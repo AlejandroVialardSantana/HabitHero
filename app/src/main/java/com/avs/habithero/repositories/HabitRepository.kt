@@ -95,4 +95,19 @@ class HabitRepository {
             }
         return habitLiveData
     }
+
+    fun updateHabitCompletion(habit: Habit, userId: String) {
+        if (habit.habitId != null) {
+            db.collection("users").document(userId).collection("habits").document(habit.habitId!!)
+                .update("completions", habit.completions)
+                .addOnSuccessListener {
+                    Log.d("HabitRepository", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("HabitRepository", "Error updating document", e)
+                }
+        } else {
+            Log.e("HabitRepository", "Error: Habit ID is null")
+        }
+    }
 }

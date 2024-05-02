@@ -107,4 +107,8 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
         }
         editor.apply()
     }
+
+    fun updateHabitCompletion(habit: Habit) {
+        habitRepository.updateHabitCompletion(habit, userId)
+    }
 }

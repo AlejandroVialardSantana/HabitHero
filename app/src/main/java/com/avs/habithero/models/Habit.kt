@@ -8,7 +8,7 @@ data class Habit(
     val selectedDays: List<Boolean> = listOf(false, false, false, false, false, false, false),
     val notificationTimes: List<String> = listOf(),
     val duration: Int = 0,
-    val isCompleted: Boolean = false,
+    var completions: MutableMap<String, Boolean> = mutableMapOf(),
 )
  {
     val frequency: Int

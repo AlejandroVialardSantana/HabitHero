@@ -51,7 +51,7 @@ class AddHabitFragment: Fragment() {
         binding.buttonSaveHabit.setOnClickListener {
             val isUpdate = habitId != null
             val habit = addOrUpdateHabit(isUpdate)
-            (activity as? HomeActivity)?.onAddEventToCalendar(habit)
+            // (activity as? HomeActivity)?.onAddEventToCalendar(habit)
             findNavController().popBackStack()
         }
     }
@@ -123,7 +123,6 @@ class AddHabitFragment: Fragment() {
             selectedDays = selectedDays,
             notificationTimes = notificationTimes,
             duration = duration,
-            isCompleted = false
         )
 
         if (isUpdate) {

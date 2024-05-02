@@ -8,10 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.habithero.R
 import com.avs.habithero.models.Habit
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class HabitAdapter(private var habits: MutableList<Habit>,
                     private val onEditClicked: (Habit) -> Unit,
-                    private val onDeleteClicked: (Habit, Int) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+                    private val onDeleteClicked: (Habit, Int) -> Unit,
+                    private val onCompletedClicked: (Habit, Boolean) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     class HabitViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.habitName)
         val habitTime: TextView = view.findViewById(R.id.habitTime)
@@ -27,7 +31,12 @@ class HabitAdapter(private var habits: MutableList<Habit>,
         val habit = habits[position]
         holder.name.text = habit.title
         holder.habitTime.text = habit.duration.toString()
-        holder.checkBoxCompleted.isChecked = habit.isCompleted
+
+        val currentDate = getTodayDateString()
+
+        holder.checkBoxCompleted.setOnCheckedChangeListener(null)
+
+        holder.checkBoxCompleted.isChecked = habit.completions.getOrDefault(currentDate, false)
 
         holder.itemView.findViewById<View>(R.id.editHabit).setOnClickListener {
             onEditClicked(habit)
@@ -35,6 +44,11 @@ class HabitAdapter(private var habits: MutableList<Habit>,
 
         holder.itemView.findViewById<View>(R.id.deleteHabit).setOnClickListener {
             onDeleteClicked(habit, position)
+        }
+
+        holder.checkBoxCompleted.setOnCheckedChangeListener { _, isChecked ->
+            habits[position].completions[currentDate] = isChecked
+            onCompletedClicked(habits[position], isChecked)
         }
     }
 
@@ -51,5 +65,10 @@ class HabitAdapter(private var habits: MutableList<Habit>,
     fun removeItem(position: Int) {
         habits.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+     fun getTodayDateString(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return formatter.format(Calendar.getInstance().time)
     }
 }

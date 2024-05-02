@@ -1,6 +1,8 @@
 package com.avs.habithero.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import com.avs.habithero.adapters.HabitAdapter
 import com.avs.habithero.databinding.FragmentHomeBinding
 import com.avs.habithero.repositories.HabitRepository
 import com.avs.habithero.viewmodel.HomeViewModel
+import java.util.Calendar
 
 class HomeFragment: Fragment() {
 
@@ -29,11 +32,17 @@ class HomeFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeHabits()
+        scheduleMidnightRefresh()
 
         binding.addHabit.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddHabitFragment(null)
             findNavController().navigate(action)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeHabits() {
@@ -58,14 +67,35 @@ class HomeFragment: Fragment() {
             onDeleteClicked = { habit, position ->
                 viewModel.deleteHabit(habit.habitId?:"")
                 habitAdapter.removeItem(position)
+            },
+            onCompletedClicked = { habit, isChecked ->
+                val currentDate = habitAdapter.getTodayDateString()
+                habit.completions[currentDate] = isChecked
+                viewModel.updateHabitCompletion(habit)
             }
+
         )
         binding.habitsRecyclerView.adapter = habitAdapter
         binding.habitsRecyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun scheduleMidnightRefresh() {
+        val calendar = Calendar.getInstance()
+        val now = calendar.timeInMillis
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        val millisUntilMidnight = calendar.timeInMillis - now
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            refreshHabitsForNewDay()
+        }, millisUntilMidnight)
+    }
+
+    private fun refreshHabitsForNewDay() {
+       habitAdapter.notifyDataSetChanged()
     }
 }
