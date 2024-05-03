@@ -46,9 +46,17 @@ class HomeFragment: Fragment() {
     }
 
     private fun observeHabits() {
-        viewModel.habits.observe(viewLifecycleOwner) { habits ->
-            habitAdapter.updateData(habits)
-            updateWelcomeMessageVisibility(habits.isEmpty())
+        viewModel.habits.observe(viewLifecycleOwner) { allHabits ->
+            val dayOfWeekIndex = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+            val currentDayIndex = if (dayOfWeekIndex == Calendar.SUNDAY) {
+                6 // Si es domingo (1 en Calendar), será 6 (sábado) en selectedDays
+            } else {
+                dayOfWeekIndex - 2 // Para el resto, ajusta en consecuencia
+            }
+
+            val filteredHabits = allHabits.filter { it.selectedDays[currentDayIndex] }
+            habitAdapter.updateData(filteredHabits)
+            updateWelcomeMessageVisibility(filteredHabits.isEmpty())
         }
     }
 
