@@ -75,15 +75,7 @@ class HomeFragment: Fragment() {
 
             binding.loading.visibility = View.GONE
             binding.addHabit.visibility = View.VISIBLE
-            if (filteredHabits.isEmpty()) {
-                binding.welcomeMessage.visibility = View.VISIBLE
-                binding.subWelcomeMessage.visibility = View.VISIBLE
-                binding.habitsRecyclerView.visibility = View.GONE
-            } else {
-                binding.welcomeMessage.visibility = View.GONE
-                binding.subWelcomeMessage.visibility = View.GONE
-                binding.habitsRecyclerView.visibility = View.VISIBLE
-            }
+            updateWelcomeMessageVisibility(filteredHabits.isEmpty())
         }
     }
 
@@ -93,10 +85,14 @@ class HomeFragment: Fragment() {
             binding.welcomeMessage.visibility = View.VISIBLE
             binding.subWelcomeMessage.visibility = View.VISIBLE
             binding.habitsRecyclerView.visibility = View.GONE
+            binding.textView3.visibility = View.GONE
+            binding.username.visibility = View.GONE
         } else {
             binding.welcomeMessage.visibility = View.GONE
             binding.subWelcomeMessage.visibility = View.GONE
             binding.habitsRecyclerView.visibility = View.VISIBLE
+            binding.textView3.visibility = View.VISIBLE
+            binding.username.visibility = View.VISIBLE
         }
     }
 
