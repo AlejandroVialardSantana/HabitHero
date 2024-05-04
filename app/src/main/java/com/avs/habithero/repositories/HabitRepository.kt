@@ -24,6 +24,7 @@ class HabitRepository {
                     _habits.postValue(habits)
                 } else {
                     Log.d("HabitRepository", "Current data: null")
+                    _habits.postValue(emptyList())
                 }
             }
     }

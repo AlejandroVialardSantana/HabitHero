@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.avs.habithero.repositories.AuthRepository
 import com.google.firebase.auth.AuthCredential
+import io.grpc.Context
 
 class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
@@ -25,5 +26,9 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     fun signOut() {
         authRepository.signOut()
+    }
+
+    fun getUsername(): LiveData<String> {
+        return authRepository.getUsername()
     }
 }

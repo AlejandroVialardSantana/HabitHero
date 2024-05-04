@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -11,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.avs.habithero.adapters.HabitAdapter
 import com.avs.habithero.databinding.FragmentHomeBinding
+import com.avs.habithero.repositories.AuthRepository
 import com.avs.habithero.repositories.HabitRepository
+import com.avs.habithero.viewmodel.AuthViewModel
 import com.avs.habithero.viewmodel.HomeViewModel
 import java.util.Calendar
 
@@ -21,10 +24,12 @@ class HomeFragment: Fragment() {
     private val binding get() = _binding!!
     private lateinit var habitAdapter: HabitAdapter
     private lateinit var viewModel: HomeViewModel
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = HomeViewModel(HabitRepository())
+        authViewModel = AuthViewModel(AuthRepository())
         return binding.root
     }
 
@@ -34,11 +39,22 @@ class HomeFragment: Fragment() {
         observeHabits()
         scheduleMidnightRefresh()
 
+        binding.loading.visibility = View.VISIBLE
+        binding.welcomeMessage.visibility = View.INVISIBLE
+        binding.subWelcomeMessage.visibility = View.INVISIBLE
+        binding.habitsRecyclerView.visibility = View.INVISIBLE
+        binding.addHabit.visibility = View.INVISIBLE
+
+        authViewModel.getUsername().observe(viewLifecycleOwner) { username ->
+            binding.username.text = username
+        }
+
         binding.addHabit.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddHabitFragment(null)
             findNavController().navigate(action)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -49,20 +65,39 @@ class HomeFragment: Fragment() {
         viewModel.habits.observe(viewLifecycleOwner) { allHabits ->
             val dayOfWeekIndex = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
             val currentDayIndex = if (dayOfWeekIndex == Calendar.SUNDAY) {
-                6 // Si es domingo (1 en Calendar), será 6 (sábado) en selectedDays
+                6
             } else {
-                dayOfWeekIndex - 2 // Para el resto, ajusta en consecuencia
+                dayOfWeekIndex - 2
             }
 
             val filteredHabits = allHabits.filter { it.selectedDays[currentDayIndex] }
             habitAdapter.updateData(filteredHabits)
-            updateWelcomeMessageVisibility(filteredHabits.isEmpty())
+
+            binding.loading.visibility = View.GONE
+            binding.addHabit.visibility = View.VISIBLE
+            if (filteredHabits.isEmpty()) {
+                binding.welcomeMessage.visibility = View.VISIBLE
+                binding.subWelcomeMessage.visibility = View.VISIBLE
+                binding.habitsRecyclerView.visibility = View.GONE
+            } else {
+                binding.welcomeMessage.visibility = View.GONE
+                binding.subWelcomeMessage.visibility = View.GONE
+                binding.habitsRecyclerView.visibility = View.VISIBLE
+            }
         }
     }
 
+
     private fun updateWelcomeMessageVisibility(isEmpty: Boolean) {
-        binding.welcomeMessage.visibility = if (isEmpty) View.VISIBLE else View.GONE
-        binding.subWelcomeMessage.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        if (isEmpty) {
+            binding.welcomeMessage.visibility = View.VISIBLE
+            binding.subWelcomeMessage.visibility = View.VISIBLE
+            binding.habitsRecyclerView.visibility = View.GONE
+        } else {
+            binding.welcomeMessage.visibility = View.GONE
+            binding.subWelcomeMessage.visibility = View.GONE
+            binding.habitsRecyclerView.visibility = View.VISIBLE
+        }
     }
 
     private fun setupRecyclerView() {

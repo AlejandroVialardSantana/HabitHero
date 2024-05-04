@@ -4,7 +4,7 @@ data class Habit(
     var habitId: String? = null,
     val title: String = "",
     val type: String = "",
-    val frequencyType: String = "Weekly",
+    val frequencyType: String = "",
     val selectedDays: List<Boolean> = listOf(false, false, false, false, false, false, false),
     val notificationTimes: List<String> = listOf(),
     val duration: Int = 0,

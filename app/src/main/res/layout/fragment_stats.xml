@@ -1,18 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnToggleDaily"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Stats Fragment"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Daily"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btnToggleWeekly"/>
+
+    <Button
+        android:id="@+id/btnToggleWeekly"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Weekly"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnToggleDaily"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chartDaily"
+        android:layout_width="0dp"
+        android:layout_height="600dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/btnToggleDaily"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chartWeekly"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnToggleDaily"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

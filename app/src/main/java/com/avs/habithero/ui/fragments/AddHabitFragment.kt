@@ -13,6 +13,7 @@ import com.avs.habithero.models.Habit
 import com.avs.habithero.repositories.HabitRepository
 import com.avs.habithero.viewmodel.HomeViewModel
 import android.widget.AdapterView
+import com.avs.habithero.enums.HabitFrequency
 import com.avs.habithero.ui.activities.HomeActivity
 
 class AddHabitFragment: Fragment() {
@@ -50,7 +51,7 @@ class AddHabitFragment: Fragment() {
 
         binding.buttonSaveHabit.setOnClickListener {
             val isUpdate = habitId != null
-            val habit = addOrUpdateHabit(isUpdate)
+            addOrUpdateHabit(isUpdate)
             // (activity as? HomeActivity)?.onAddEventToCalendar(habit)
             findNavController().popBackStack()
         }
@@ -70,21 +71,28 @@ class AddHabitFragment: Fragment() {
     }
 
     private fun getSelectedDays(): List<Boolean> {
-        val allDays = mutableListOf<Boolean>()
-        val isDaily = binding.spinnerFrequencyType.selectedItem.toString() == "Diariamente"
-        allDays.add(isDaily || binding.checkboxMonday.isChecked)
-        allDays.add(isDaily || binding.checkboxTuesday.isChecked)
-        allDays.add(isDaily || binding.checkboxWednesday.isChecked)
-        allDays.add(isDaily || binding.checkboxThursday.isChecked)
-        allDays.add(isDaily || binding.checkboxFriday.isChecked)
-        allDays.add(isDaily || binding.checkboxSaturday.isChecked)
-        allDays.add(isDaily || binding.checkboxSunday.isChecked)
-        return allDays
+        val selectedFrequencyIndex = binding.spinnerFrequencyType.selectedItemPosition
+        val selectedFrequency = HabitFrequency.values()[selectedFrequencyIndex]
+
+        val isDaily = selectedFrequency == HabitFrequency.DAILY
+
+        return listOf(
+            isDaily || binding.checkboxMonday.isChecked,
+            isDaily || binding.checkboxTuesday.isChecked,
+            isDaily || binding.checkboxWednesday.isChecked,
+            isDaily || binding.checkboxThursday.isChecked,
+            isDaily || binding.checkboxFriday.isChecked,
+            isDaily || binding.checkboxSaturday.isChecked,
+            isDaily || binding.checkboxSunday.isChecked
+        )
     }
 
+
     private fun initializeFrequencySpinner() {
-        val frequencies = resources.getStringArray(com.avs.habithero.R.array.habit_frequency)
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, frequencies)
+        val frequencies = HabitFrequency.values()
+        val frequencyStrings = resources.getStringArray(com.avs.habithero.R.array.habit_frequency)
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, frequencyStrings)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerFrequencyType.adapter = adapter
 
@@ -107,7 +115,7 @@ class AddHabitFragment: Fragment() {
     private fun addOrUpdateHabit(isUpdate: Boolean): Habit {
         val title = binding.editTextHabitTitle.text.toString()
         val type = binding.spinnerHabitType.selectedItem.toString()
-        val frequencyType = binding.spinnerFrequencyType.selectedItem.toString()
+        val frequencyType = resources.getStringArray(com.avs.habithero.R.array.habit_frequency)[binding.spinnerFrequencyType.selectedItemPosition]
         val selectedDays = getSelectedDays()
         val duration = binding.editTextDurationLabel.text.toString().toInt()
         val hour = binding.timePickerNotification.hour
@@ -136,14 +144,20 @@ class AddHabitFragment: Fragment() {
 
     private fun loadHabitData(habit: Habit) {
         binding.editTextHabitTitle.setText(habit.title)
+
         val typeIndex = resources.getStringArray(com.avs.habithero.R.array.habit_types).indexOf(habit.type)
         binding.spinnerHabitType.setSelection(typeIndex)
-        val frequencyIndex = resources.getStringArray(com.avs.habithero.R.array.habit_frequency).indexOf(habit.frequencyType)
-        binding.spinnerFrequencyType.setSelection(frequencyIndex)
+
+        val frequencyStrings = resources.getStringArray(com.avs.habithero.R.array.habit_frequency)
+        val frequencyTypeIndex = frequencyStrings.indexOf(habit.frequencyType)
+        binding.spinnerFrequencyType.setSelection(frequencyTypeIndex)
+
         binding.editTextDurationLabel.setText(habit.duration.toString())
         binding.timePickerNotification.hour = habit.notificationTimes[0].split(":")[0].toInt()
         binding.timePickerNotification.minute = habit.notificationTimes[0].split(":")[1].toInt()
-        if (habit.frequencyType != "Diariamente") {
+
+        val frequencyType = HabitFrequency.values()[frequencyTypeIndex]
+        if (frequencyType != HabitFrequency.DAILY) {
             binding.checkboxMonday.isChecked = habit.selectedDays[0]
             binding.checkboxTuesday.isChecked = habit.selectedDays[1]
             binding.checkboxWednesday.isChecked = habit.selectedDays[2]
@@ -151,11 +165,12 @@ class AddHabitFragment: Fragment() {
             binding.checkboxFriday.isChecked = habit.selectedDays[4]
             binding.checkboxSaturday.isChecked = habit.selectedDays[5]
             binding.checkboxSunday.isChecked = habit.selectedDays[6]
-        }
-        else {
+        } else {
             resetCheckboxes()
         }
     }
+
+
 
     private fun resetCheckboxes() {
         binding.checkboxMonday.isChecked = false

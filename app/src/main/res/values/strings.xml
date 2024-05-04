@@ -27,6 +27,7 @@
     <!-- Home Fragment -->
     <string name="welcome_message">¡Bienvenido a HabitHero!</string>
     <string name="sub_welcome_message">Comienza añadiendo los hábitos que quieras cumplir</string>
+    <string name="hello">Hola, </string>
 
     <!-- Settings Fragment -->
     <string name="change_language">Cambiar idioma</string>

@@ -59,7 +59,7 @@ class AuthRepository {
         return result
     }
 
-    fun saveUserData(user: User, result: MutableLiveData<Result<Boolean>>) {
+    private fun saveUserData(user: User, result: MutableLiveData<Result<Boolean>>) {
         val userData = hashMapOf(
             "userId" to user.userId,
             "username" to user.username,
@@ -86,5 +86,19 @@ class AuthRepository {
 
     fun getCurrentUserId(): String {
         return auth.currentUser?.uid ?: ""
+    }
+
+    fun getUsername(): LiveData<String> {
+        val result = MutableLiveData<String>()
+
+        db.collection("users").document(getCurrentUserId()).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val username = task.result?.getString("username") ?: ""
+                result.value = username
+            } else {
+                result.value = ""
+            }
+        }
+        return result
     }
 }
