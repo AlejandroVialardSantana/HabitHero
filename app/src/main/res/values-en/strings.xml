@@ -44,6 +44,11 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Timer Dialog -->
+    <string name="start">Start</string>
+    <string name="stop">Pause</string>
+    <string name="timer_dialog">Timer</string>
+
     <!-- Add Habit Fragment -->
     <string name="habit_name">Habit name</string>
     <string name="habit_type">Habit type</string>

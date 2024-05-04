@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +29,10 @@ class HomeFragment: Fragment() {
     private lateinit var habitAdapter: HabitAdapter
     private lateinit var viewModel: HomeViewModel
     private lateinit var authViewModel: AuthViewModel
+    private var countDownTimer: CountDownTimer? = null
+    private var isRunning = false
+    private var timeLeftInMillis: Long = 0L
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -117,7 +120,7 @@ class HomeFragment: Fragment() {
                 viewModel.updateHabitCompletion(habit)
             },
             onChronometerClicked = { habit ->
-                Log.d("HomeFragment", "Chronometer clicked")
+                showTimerDialog(habit)
             }
         )
         binding.habitsRecyclerView.adapter = habitAdapter
@@ -161,5 +164,96 @@ class HomeFragment: Fragment() {
 
     private fun refreshHabitsForNewDay() {
        habitAdapter.notifyDataSetChanged()
+    }
+
+    private fun showTimerDialog(habit: Habit) {
+        timeLeftInMillis = habit.duration * 60 * 1000L
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_timer, null)
+        val timerText = dialogView.findViewById<TextView>(R.id.timerText)
+        updateTimerText(timerText, timeLeftInMillis)
+
+        val builder = AlertDialog.Builder(requireContext())
+            .setTitle(R.string.timer_dialog)
+            .setView(dialogView)
+            .setPositiveButton(R.string.start, null)
+            .setNeutralButton(R.string.stop, null)
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                cancelTimer()
+                dialog.dismiss()
+            }
+
+        val dialog = builder.create()
+        dialog.setOnShowListener {
+            val startButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val pauseButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+
+            startButton.setOnClickListener {
+                if (!isRunning) {
+                    startTimer(timerText)
+                }
+            }
+
+            pauseButton.setOnClickListener {
+                if (isRunning) {
+                    pauseTimer()
+                }
+            }
+
+            // Actualiza el cronómetro mientras el diálogo esté abierto
+            val updateTask = object : Runnable {
+                override fun run() {
+                    if (isRunning) {
+                        updateTimerText(timerText, timeLeftInMillis)
+                        handler.postDelayed(this, 1000)
+                    }
+                }
+            }
+            handler.post(updateTask)
+        }
+
+        dialog.setOnDismissListener {
+            if (isRunning) {
+                cancelTimer()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun startTimer(timerText: TextView) {
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                updateTimerText(timerText, millisUntilFinished)
+            }
+
+            override fun onFinish() {
+                isRunning = false
+                updateTimerText(timerText, 0)
+            }
+        }.start()
+        isRunning = true
+    }
+
+    private fun pauseTimer() {
+        countDownTimer?.cancel()
+        isRunning = false
+    }
+
+    private fun cancelTimer() {
+        countDownTimer?.cancel()
+        isRunning = false
+        timeLeftInMillis = 0L
+    }
+
+    private fun updateTimerText(timerText: TextView, millisUntilFinished: Long) {
+        val hours = millisUntilFinished / 3600000
+        val minutes = (millisUntilFinished % 3600000) / 60000
+        val seconds = (millisUntilFinished % 60000) / 1000
+
+        val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        timerText.text = formattedTime
     }
 }
