@@ -17,8 +17,8 @@ class HabitAdapter(private var habits: MutableList<Habit>,
                     private val onDeleteClicked: (Habit, Int) -> Unit,
                     private val onCompletedClicked: (Habit, Boolean) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     class HabitViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name: TextView = view.findViewById(R.id.habitName)
-        val habitTime: TextView = view.findViewById(R.id.habitTime)
+        val name: TextView = view.findViewById(R.id.name)
+        val habitTime: TextView = view.findViewById(R.id.time)
         val checkBoxCompleted: CheckBox = view.findViewById(R.id.checkBoxCompleted)
     }
 
@@ -30,7 +30,9 @@ class HabitAdapter(private var habits: MutableList<Habit>,
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         val habit = habits[position]
         holder.name.text = habit.title
-        holder.habitTime.text = habit.duration.toString()
+
+        val time = holder.habitTime.context.getString(R.string.time, habit.duration)
+        holder.habitTime.text = time
 
         val currentDate = getTodayDateString()
 

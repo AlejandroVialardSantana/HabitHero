@@ -38,17 +38,18 @@
         app:layout_constraintTop_toBottomOf="@+id/welcomeMessage"
         app:layout_constraintVertical_bias="0.057" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/habitsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="570dp"
+        android:layout_marginTop="20dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/addHabit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
-        app:layout_constraintVertical_bias="0.816" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addHabit"
@@ -92,6 +93,7 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:text=""
         android:textColor="@color/black"
         android:textSize="18sp"

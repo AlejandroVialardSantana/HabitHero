@@ -29,7 +29,7 @@
     <!-- Home Fragment -->
     <string name="welcome_message">Welcome to HabitHero!</string>
     <string name="sub_welcome_message">Start by adding the habits you want to fulfill</string>
-    <string name="hello">Hello, </string>
+    <string name="hello">Hello</string>
 
     <!-- Settings Fragment -->
     <string name="change_language">Change language</string>
@@ -54,5 +54,8 @@
     <string name="friday">F</string>
     <string name="saturday">S</string>
     <string name="sunday">Su</string>
+
+    <!-- Habit Card -->
+    <string name="time">Duration: %d minutes</string>
 
 </resources>
