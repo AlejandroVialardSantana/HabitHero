@@ -37,6 +37,12 @@
     <!-- Language Dialog -->
     <string name="select_language">Selecciona idioma</string>
 
+    <!-- Delete Dialog -->
+    <string name="confirm_delete">Confirmar eliminación</string>
+    <string name="delete_habit">¿Estás seguro de que quieres eliminar este hábito?</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
+
     <!-- Add Habit Fragment -->
     <string name="habit_name">Nombre del hábito</string>
     <string name="habit_type">Tipo de hábito</string>

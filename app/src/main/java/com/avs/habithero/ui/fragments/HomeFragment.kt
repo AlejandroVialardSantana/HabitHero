@@ -1,8 +1,11 @@
 package com.avs.habithero.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -10,8 +13,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.avs.habithero.R
 import com.avs.habithero.adapters.HabitAdapter
 import com.avs.habithero.databinding.FragmentHomeBinding
+import com.avs.habithero.models.Habit
 import com.avs.habithero.repositories.AuthRepository
 import com.avs.habithero.repositories.HabitRepository
 import com.avs.habithero.viewmodel.AuthViewModel
@@ -104,18 +109,38 @@ class HomeFragment: Fragment() {
                 findNavController().navigate(action)
             },
             onDeleteClicked = { habit, position ->
-                viewModel.deleteHabit(habit.habitId?:"")
-                habitAdapter.removeItem(position)
+                showDeleteConfirmationDialog(habit, position)
             },
             onCompletedClicked = { habit, isChecked ->
                 val currentDate = habitAdapter.getTodayDateString()
                 habit.completions[currentDate] = isChecked
                 viewModel.updateHabitCompletion(habit)
+            },
+            onChronometerClicked = { habit ->
+                Log.d("HomeFragment", "Chronometer clicked")
             }
-
         )
         binding.habitsRecyclerView.adapter = habitAdapter
         binding.habitsRecyclerView.layoutManager = LinearLayoutManager(context)
+    }
+
+    private fun showDeleteConfirmationDialog(habit: Habit, position: Int) {
+        val title = getString(R.string.confirm_delete)
+        val message = getString(R.string.delete_habit)
+        val delete = getString(R.string.delete)
+        val cancel = getString(R.string.cancel)
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton(delete) { _, _ ->
+                viewModel.deleteHabit(habit.habitId ?: "")
+                habitAdapter.removeItem(position)
+            }
+            setNegativeButton(cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
+        }
     }
 
     private fun scheduleMidnightRefresh() {

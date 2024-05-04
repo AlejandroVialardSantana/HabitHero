@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.habithero.R
@@ -15,11 +16,13 @@ import java.util.Locale
 class HabitAdapter(private var habits: MutableList<Habit>,
                     private val onEditClicked: (Habit) -> Unit,
                     private val onDeleteClicked: (Habit, Int) -> Unit,
-                    private val onCompletedClicked: (Habit, Boolean) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+                    private val onCompletedClicked: (Habit, Boolean) -> Unit,
+                    private val onChronometerClicked: (Habit) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     class HabitViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.name)
         val habitTime: TextView = view.findViewById(R.id.time)
         val checkBoxCompleted: CheckBox = view.findViewById(R.id.checkBoxCompleted)
+        val chronometer: ImageView = view.findViewById(R.id.chronometerIcon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
@@ -51,6 +54,10 @@ class HabitAdapter(private var habits: MutableList<Habit>,
         holder.checkBoxCompleted.setOnCheckedChangeListener { _, isChecked ->
             habits[position].completions[currentDate] = isChecked
             onCompletedClicked(habits[position], isChecked)
+        }
+
+        holder.chronometer.setOnClickListener {
+            onChronometerClicked(habit)
         }
     }
 
