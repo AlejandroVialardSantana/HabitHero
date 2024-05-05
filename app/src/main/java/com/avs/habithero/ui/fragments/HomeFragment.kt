@@ -47,6 +47,8 @@ class HomeFragment: Fragment() {
         observeHabits()
         scheduleMidnightRefresh()
 
+        val navController = findNavController()
+
         binding.loading.visibility = View.VISIBLE
         binding.welcomeMessage.visibility = View.INVISIBLE
         binding.subWelcomeMessage.visibility = View.INVISIBLE
@@ -59,7 +61,7 @@ class HomeFragment: Fragment() {
 
         binding.addHabit.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddHabitFragment(null)
-            findNavController().navigate(action)
+            navController.navigate(action)
         }
     }
 

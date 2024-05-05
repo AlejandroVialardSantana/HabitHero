@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import com.avs.habithero.R
 import com.avs.habithero.databinding.ActivityHomeBinding
 import com.avs.habithero.models.Habit
@@ -27,23 +28,13 @@ class HomeActivity: BaseActivity(), AddHabitFragment.CalendarActionListener {
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigation)
 
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.homeFragment -> {
-                    navController.navigate(R.id.homeFragment)
-                    true
-                }
-                R.id.statsFragment -> {
-                    navController.navigate(R.id.statsFragment)
-                    true
-                }
-                R.id.settingsFragment -> {
-                    navController.navigate(R.id.settingsFragment)
-                    true
-                }
-                else -> {
-                    it.onNavDestinationSelected(navController)
-                }
+        bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> bottomNavigationView.menu.findItem(R.id.homeFragment).isChecked = true
+                R.id.statsFragment -> bottomNavigationView.menu.findItem(R.id.statsFragment).isChecked = true
+                R.id.settingsFragment -> bottomNavigationView.menu.findItem(R.id.settingsFragment).isChecked = true
             }
         }
     }
@@ -66,4 +57,11 @@ class HomeActivity: BaseActivity(), AddHabitFragment.CalendarActionListener {
         startActivity(intent)
     }
 
+    override fun onBackPressed() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        if (!navController.popBackStack()) {
+            super.onBackPressed()
+        }
+    }
 }
