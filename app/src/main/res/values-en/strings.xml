@@ -69,4 +69,7 @@
     <!-- Habit Card -->
     <string name="time">Duration: %d minutes</string>
 
+    <!-- Habit BarChart -->
+    <string name="completed">Completed</string>
+    <string name="incompleted">No completed</string>
 </resources>
