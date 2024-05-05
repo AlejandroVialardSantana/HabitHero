@@ -23,8 +23,8 @@
 
     <TextView
         android:id="@+id/subWelcomeMessage"
-        android:layout_width="354dp"
-        android:layout_height="42dp"
+        android:layout_width="355dp"
+        android:layout_height="51dp"
         android:fontFamily="@font/roboto_regular"
         android:text="@string/sub_welcome_message"
         android:textAlignment="center"

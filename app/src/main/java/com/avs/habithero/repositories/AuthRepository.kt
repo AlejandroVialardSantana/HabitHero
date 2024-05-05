@@ -1,5 +1,6 @@
 package com.avs.habithero.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.avs.habithero.models.User
@@ -84,18 +85,26 @@ class AuthRepository {
         auth.signOut()
     }
 
-    fun getCurrentUserId(): String {
-        return auth.currentUser?.uid ?: ""
+    fun getCurrentUserId(): String? {
+        return auth.currentUser?.uid
     }
 
     fun getUsername(): LiveData<String> {
+        val currentUserId = getCurrentUserId()
         val result = MutableLiveData<String>()
 
-        db.collection("users").document(getCurrentUserId()).get().addOnCompleteListener { task ->
+        if (currentUserId.isNullOrEmpty()) {
+            Log.e("AuthRepository", "Invalid user ID")
+            result.value = ""
+            return result
+        }
+
+        db.collection("users").document(currentUserId).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val username = task.result?.getString("username") ?: ""
                 result.value = username
             } else {
+                Log.e("AuthRepository", "Error fetching username", task.exception)
                 result.value = ""
             }
         }

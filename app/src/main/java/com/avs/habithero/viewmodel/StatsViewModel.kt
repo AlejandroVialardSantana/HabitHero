@@ -11,7 +11,7 @@ import java.util.Locale
 
 class StatsViewModel(private val habitRepository: HabitRepository): ViewModel() {
 
-    private val userId = AuthRepository().getCurrentUserId()
+    private val userId = AuthRepository().getCurrentUserId() ?: ""
     val habits: LiveData<List<Habit>> = habitRepository.habits
 
     init {

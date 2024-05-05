@@ -18,7 +18,11 @@ class MainActivity: BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (authViewModel.isUserLoggedIn()) {
+        if (isFirstRun()) {
+            authViewModel.signOut()
+        }
+
+        if (authViewModel.isUserLoggedIn() && authViewModel.getCurrentUserId().isNotEmpty()) {
             navigateToHome()
         }
 
@@ -31,6 +35,15 @@ class MainActivity: BaseActivity() {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun isFirstRun(): Boolean {
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        val isFirstRun = prefs.getBoolean("isFirstRun", true)
+        if (isFirstRun) {
+            prefs.edit().putBoolean("isFirstRun", false).apply()
+        }
+        return isFirstRun
     }
 
     private fun navigateToHome() {

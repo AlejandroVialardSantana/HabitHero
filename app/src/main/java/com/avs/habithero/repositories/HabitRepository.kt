@@ -12,6 +12,12 @@ class HabitRepository {
     val habits: LiveData<List<Habit>> get() = _habits
 
     fun getHabits(userId: String) {
+        if (userId.isNullOrEmpty()) {
+            Log.e("HabitRepository", "Invalid user ID: $userId")
+            _habits.postValue(emptyList())
+            return
+        }
+
         db.collection("users").document(userId).collection("habits")
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {

@@ -5,13 +5,13 @@
 
     <string name="client_id">494646768591-vsg3e14dk3gcv8ai5j4q0nfmk3c38ph4.apps.googleusercontent.com</string>
 
-    <string name="login">LogIn</string>
+    <string name="login">Log In</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot your password?</string>
     <string name="change_text"><u>Change</u></string>
     <string name="or">Or</string>
-    <string name="login_google">LogIn with Google</string>
+    <string name="login_google">Log In with Google</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="sign_up_link">Sign Up</string>
 
