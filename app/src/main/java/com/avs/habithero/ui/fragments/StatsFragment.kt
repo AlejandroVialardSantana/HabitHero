@@ -10,7 +10,7 @@ import com.avs.habithero.R
 import com.avs.habithero.databinding.FragmentStatsBinding
 import com.avs.habithero.models.Habit
 import com.avs.habithero.repositories.HabitRepository
-import com.avs.habithero.viewmodel.HomeViewModel
+import com.avs.habithero.viewmodel.StatsViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -18,19 +18,16 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class StatsFragment: Fragment() {
 
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: StatsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
-        viewModel = HomeViewModel(HabitRepository())
+        viewModel = StatsViewModel(HabitRepository())
         return binding.root
     }
 
@@ -50,7 +47,8 @@ class StatsFragment: Fragment() {
     }
 
     private fun setupBarChart(habits: List<Habit>) {
-        val (completed, notCompleted) = calculateHabitsCompletion(habits)
+        val (completed, notCompleted) = viewModel.calculateHabitsCompletion(habits)
+
         val entriesCompleted = mutableListOf<BarEntry>()
         val entriesNotCompleted = mutableListOf<BarEntry>()
 
@@ -59,17 +57,24 @@ class StatsFragment: Fragment() {
             entriesNotCompleted.add(BarEntry(i.toFloat(), notCompleted[i]))
         }
 
-        val dataSetCompleted = BarDataSet(entriesCompleted, getString(R.string.completed))
-        dataSetCompleted.color = resources.getColor(android.R.color.holo_green_light, null)
-        dataSetCompleted.setDrawValues(false)
-
-        val dataSetNotCompleted = BarDataSet(entriesNotCompleted, getString(R.string.incompleted))
-        dataSetNotCompleted.color = resources.getColor(android.R.color.holo_red_light, null)
-        dataSetNotCompleted.setDrawValues(false)
+        val dataSetCompleted = createDataSet(entriesCompleted, getString(R.string.completed), android.R.color.holo_green_light)
+        val dataSetNotCompleted = createDataSet(entriesNotCompleted, getString(R.string.incompleted), android.R.color.holo_red_light)
 
         val data = BarData(dataSetCompleted, dataSetNotCompleted)
         data.barWidth = 0.4f
 
+        configureChartAxis()
+        configureLegend()
+
+        binding.chartDaily.apply {
+            description.text = ""
+            this.data = data
+            groupBars(-0.5f, 0.1f, 0.05f)
+            invalidate()
+        }
+    }
+
+    private fun configureChartAxis() {
         val daysOfWeek = listOf(
             getString(R.string.monday),
             getString(R.string.tuesday),
@@ -81,7 +86,6 @@ class StatsFragment: Fragment() {
         )
 
         binding.chartDaily.apply {
-            this.data = data
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 granularity = 1f
@@ -90,7 +94,6 @@ class StatsFragment: Fragment() {
                 axisMinimum = -0.5f
                 axisMaximum = 6.5f
             }
-
             axisLeft.apply {
                 axisMinimum = 0f
                 granularity = 1f
@@ -100,54 +103,29 @@ class StatsFragment: Fragment() {
                     }
                 }
             }
-
             axisRight.isEnabled = false
-            description.text = ""
-            legend.apply {
-                verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-                orientation = Legend.LegendOrientation.HORIZONTAL
-                setDrawInside(false)
-                yOffset = 12f
-            }
-
-            groupBars(-0.5f, 0.1f, 0.05f)
-            invalidate()
         }
     }
 
-    private fun calculateHabitsCompletion(habits: List<Habit>): Pair<List<Float>, List<Float>> {
-        val completed = FloatArray(7)
-        val notCompleted = FloatArray(7)
-        val calendar = Calendar.getInstance()
-        val currentDayOfWeek = adjustDayOfWeekIndex(calendar.get(Calendar.DAY_OF_WEEK))
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-        for (habit in habits) {
-            habit.selectedDays.forEachIndexed { index, isSelected ->
-                if (isSelected && index <= currentDayOfWeek) {
-                    calendar.set(Calendar.DAY_OF_WEEK, index + 2)
-                    val dateKey = formatter.format(calendar.time)
-                    val completionStatus = habit.completions[dateKey]
-                    if (completionStatus == true) {
-                        completed[index]++
-                    } else {
-                        notCompleted[index]++
-                    }
-                }
-            }
+    private fun configureLegend() {
+        binding.chartDaily.legend.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            yOffset = 12f
         }
-        return completed.toList() to notCompleted.toList()
     }
 
+    private fun createDataSet(entries: List<BarEntry>, label: String, color: Int): BarDataSet {
+        return BarDataSet(entries, label).apply {
+            setColor(resources.getColor(color, null))
+            setDrawValues(false)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun adjustDayOfWeekIndex(dayOfWeek: Int): Int {
-        return if (dayOfWeek == Calendar.SUNDAY) 6 else dayOfWeek - 2
-    }
-
 }
