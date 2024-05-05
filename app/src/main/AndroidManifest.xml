@@ -45,6 +45,11 @@
             android:exported="true">
         </activity>
 
+        <activity
+            android:name=".ui.activities.ResetPasswordActivity"
+            android:exported="true">
+        </activity>
+
         <receiver android:name=".receivers.AlarmReceiver" />
 
         <receiver android:name=".receivers.BootCompletedReceiver"

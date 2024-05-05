@@ -31,4 +31,8 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
     fun getUsername(): LiveData<String> {
         return authRepository.getUsername()
     }
+
+    fun resetPassword(email: String): LiveData<Result<Boolean>> {
+        return authRepository.resetPassword(email)
+    }
 }

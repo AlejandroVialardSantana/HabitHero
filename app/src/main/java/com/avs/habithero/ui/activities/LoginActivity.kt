@@ -18,7 +18,6 @@ class LoginActivity : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: Inyectar repositorio mediante un factory
         val authRepository = AuthRepository()
         authViewModel = AuthViewModel(authRepository)
 
@@ -42,6 +41,11 @@ class LoginActivity : BaseActivity() {
 
         binding.signUpLink.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.changePasswordLink.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
             startActivity(intent)
         }
 

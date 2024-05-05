@@ -19,6 +19,9 @@
     <string name="have_account">¿Ya tienes cuenta?</string>
     <string name="login_link"><u>Inicia sesión</u></string>
 
+    <string name="reset_password">Introduzca su email de la cuenta. Le enviaremos instrucciones para restablecer su contraseña.</string>
+    <string name="change_password">Cambiar contraseña</string>
+
     <!-- Bottom Navigation -->
     <string name="home">Inicio</string>
     <string name="stats">Estadísticas</string>

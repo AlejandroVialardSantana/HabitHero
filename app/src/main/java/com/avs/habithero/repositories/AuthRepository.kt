@@ -101,4 +101,18 @@ class AuthRepository {
         }
         return result
     }
+
+    fun resetPassword(email: String): LiveData<Result<Boolean>> {
+        val result = MutableLiveData<Result<Boolean>>()
+
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                result.value = Result.success(true)
+            } else {
+                result.value =
+                    Result.failure(task.exception ?: Exception("An unknown error occurred"))
+            }
+        }
+        return result
+    }
 }

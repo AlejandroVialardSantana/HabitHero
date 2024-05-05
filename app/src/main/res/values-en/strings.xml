@@ -21,6 +21,9 @@
     <string name="have_account">Already have an account?</string>
     <string name="login_link"><u>LogIn</u></string>
 
+    <string name="reset_password">Enter your account email. We will send you instructions to reset your password.</string>
+    <string name="change_password">Change password</string>
+
     <!-- Bottom Navigation -->
     <string name="home">Home</string>
     <string name="stats">Stats</string>
