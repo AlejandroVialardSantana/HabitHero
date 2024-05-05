@@ -33,7 +33,7 @@ object NotificationHelper {
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle("Habit Reminder")
             .setContentText("Time for your habit: $habitTitle")
-            .setSmallIcon(R.drawable.ic_logo)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setAutoCancel(true)
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
