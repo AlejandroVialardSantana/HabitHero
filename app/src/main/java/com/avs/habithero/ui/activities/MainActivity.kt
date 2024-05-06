@@ -37,6 +37,8 @@ class MainActivity: BaseActivity() {
         }
     }
 
+    // Método que verifica si es la primera vez que se ejecuta la aplicación
+    // Se guarda en las preferencias compartidas si es la primera vez que se ejecuta
     private fun isFirstRun(): Boolean {
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val isFirstRun = prefs.getBoolean("isFirstRun", true)

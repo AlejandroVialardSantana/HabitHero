@@ -16,10 +16,6 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
         return authRepository.signUp(email, password, username)
     }
 
-    fun signUpWithGoogle(credential: AuthCredential): LiveData<Result<Boolean>> {
-        return authRepository.signUpWithGoogle(credential)
-    }
-
     fun isUserLoggedIn(): Boolean {
         return authRepository.isUserLoggedIn()
     }

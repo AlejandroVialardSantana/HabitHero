@@ -46,6 +46,8 @@ class StatsFragment: Fragment() {
         }
     }
 
+    // Método que configura el gráfico de barras con los hábitos recibidos
+    // El gráfico viene dado por MPAndroidChart
     private fun setupBarChart(habits: List<Habit>) {
         val (completed, notCompleted) = viewModel.calculateHabitsCompletion(habits)
 

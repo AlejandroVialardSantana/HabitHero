@@ -18,10 +18,6 @@ import com.avs.habithero.ui.activities.HomeActivity
 
 class AddHabitFragment: Fragment() {
 
-    interface CalendarActionListener {
-        fun onAddEventToCalendar(habit: Habit)
-    }
-
     private var _binding: FragmentAddHabitBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
@@ -41,6 +37,7 @@ class AddHabitFragment: Fragment() {
         initializeFrequencySpinner()
         setupTimePicker()
 
+        // Si habitId no es nulo, se obtiene el hábito por su id y se carga la información en la vista
         habitId?.let { id ->
             viewModel.getHabitById(id).observe(viewLifecycleOwner) { habit ->
                 habit?.let {
@@ -49,14 +46,15 @@ class AddHabitFragment: Fragment() {
             }
         }
 
+        // Se añade un evento al botón de guardar hábito tanto para añadir un nuevo hábito como para actualizar uno existente
         binding.buttonSaveHabit.setOnClickListener {
             val isUpdate = habitId != null
             addOrUpdateHabit(isUpdate)
-            // (activity as? HomeActivity)?.onAddEventToCalendar(habit)
             findNavController().popBackStack()
         }
     }
 
+    // Método que inicializa el spinner de tipos de hábitos con arreglo de strings
     private fun initializeTypesSpinner() {
         val types = resources.getStringArray(com.avs.habithero.R.array.habit_types)
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, types)
@@ -70,6 +68,7 @@ class AddHabitFragment: Fragment() {
         binding.timePickerNotification.minute = 0
     }
 
+    // Método que obtiene los días seleccionados comprobando si la frecuencia es diaria o no
     private fun getSelectedDays(): List<Boolean> {
         val selectedFrequencyIndex = binding.spinnerFrequencyType.selectedItemPosition
         val selectedFrequency = HabitFrequency.values()[selectedFrequencyIndex]
@@ -87,7 +86,7 @@ class AddHabitFragment: Fragment() {
         )
     }
 
-
+    // Método que inicializa el spinner de frecuencia
     private fun initializeFrequencySpinner() {
         val frequencies = HabitFrequency.values()
         val frequencyStrings = resources.getStringArray(com.avs.habithero.R.array.habit_frequency)
@@ -142,6 +141,7 @@ class AddHabitFragment: Fragment() {
         return habit
     }
 
+    // Carga la información del hábito en la vista
     private fun loadHabitData(habit: Habit) {
         binding.editTextHabitTitle.setText(habit.title)
 
@@ -169,8 +169,6 @@ class AddHabitFragment: Fragment() {
             resetCheckboxes()
         }
     }
-
-
 
     private fun resetCheckboxes() {
         binding.checkboxMonday.isChecked = false

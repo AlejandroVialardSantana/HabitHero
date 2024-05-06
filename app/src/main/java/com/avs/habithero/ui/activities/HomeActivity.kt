@@ -13,7 +13,7 @@ import com.avs.habithero.ui.fragments.AddHabitFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
-class HomeActivity: BaseActivity(), AddHabitFragment.CalendarActionListener {
+class HomeActivity: BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
 
@@ -37,24 +37,6 @@ class HomeActivity: BaseActivity(), AddHabitFragment.CalendarActionListener {
                 R.id.settingsFragment -> bottomNavigationView.menu.findItem(R.id.settingsFragment).isChecked = true
             }
         }
-    }
-
-    override fun onAddEventToCalendar(habit: Habit) {
-        val startTime = Calendar.getInstance()
-        val endTime = Calendar.getInstance().apply {
-            add(Calendar.HOUR, habit.duration)
-        }
-
-        val intent = Intent(Intent.ACTION_INSERT).apply {
-            data = CalendarContract.Events.CONTENT_URI
-            putExtra(CalendarContract.Events.TITLE, habit.title)
-            putExtra(CalendarContract.Events.EVENT_LOCATION, "Home")
-            putExtra(CalendarContract.Events.DESCRIPTION, "Scheduled via HabitHero app.")
-            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.timeInMillis)
-            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        startActivity(intent)
     }
 
     override fun onBackPressed() {

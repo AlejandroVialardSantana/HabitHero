@@ -41,6 +41,8 @@ class HabitRepository {
             .addOnSuccessListener { documentReference ->
                 db.collection("users").document(userId).collection("habits")
                     .document(documentReference.id)
+                    // se actualiza el ID del documento con el ID generado por Firestore porque si no
+                    // se pierde la referencia y sale nulo
                     .update("habitId", documentReference.id)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -103,6 +105,7 @@ class HabitRepository {
         return habitLiveData
     }
 
+    // Actualiza el mapa de completados de un hábito
     fun updateHabitCompletion(habit: Habit, userId: String) {
         if (habit.habitId != null) {
             db.collection("users").document(userId).collection("habits").document(habit.habitId!!)

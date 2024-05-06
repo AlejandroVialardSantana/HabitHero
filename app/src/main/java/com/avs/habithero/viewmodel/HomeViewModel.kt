@@ -27,7 +27,6 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
         habitRepository.addHabit(habit, userId) { habitId ->
             habit.habitId = habitId
             scheduleAlarmForHabit(habit, context)
-            // addEventToCalendar(context, habit)
             saveAlarmDetails(context, habit)
         }
     }
@@ -39,7 +38,6 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
     fun updateHabit(habit: Habit, context: Context) {
         habitRepository.updateHabit(habit, userId)
         scheduleAlarmForHabit(habit, context)
-        // addEventToCalendar(context, habit)
         saveAlarmDetails(context, habit)
     }
 
@@ -47,6 +45,7 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
         return habitRepository.getHabitById(habitId, userId)
     }
 
+    // Método que programa las alarmas para los hábitos
     private fun scheduleAlarmForHabit(habit: Habit, context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val now = Calendar.getInstance()
@@ -83,6 +82,7 @@ class HomeViewModel(private val habitRepository: HabitRepository) : ViewModel() 
         }
     }
 
+    // Método que guarda los detalles de las alarmas en las preferencias compartidas
     private fun saveAlarmDetails(context: Context, habit: Habit) {
         val sharedPreferences = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

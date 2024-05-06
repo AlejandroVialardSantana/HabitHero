@@ -75,6 +75,9 @@ class HomeFragment: Fragment() {
     private fun observeHabits() {
         viewModel.habits.observe(viewLifecycleOwner) { allHabits ->
             val dayOfWeekIndex = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
+            // Se ajusta el índice del día de la semana para que empiece en 0 (lunes) y termine en 6 (domingo)
+            // Debido a que en Calendar, el domingo es el primer día de la semana (domingo = 1)
             val currentDayIndex = if (dayOfWeekIndex == Calendar.SUNDAY) {
                 6
             } else {
@@ -90,7 +93,7 @@ class HomeFragment: Fragment() {
         }
     }
 
-
+    // Método que actualiza la visibilidad de los mensajes de bienvenida y la lista de hábitos
     private fun updateWelcomeMessageVisibility(isEmpty: Boolean) {
         if (isEmpty) {
             binding.welcomeMessage.visibility = View.VISIBLE
@@ -147,6 +150,7 @@ class HomeFragment: Fragment() {
         }
     }
 
+    // Método que programa la actualización de los hábitos a la medianoche 00:00 si se está ejecutando la aplicación
     private fun scheduleMidnightRefresh() {
         val calendar = Calendar.getInstance()
         val now = calendar.timeInMillis

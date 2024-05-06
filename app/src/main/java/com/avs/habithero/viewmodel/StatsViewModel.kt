@@ -18,6 +18,7 @@ class StatsViewModel(private val habitRepository: HabitRepository): ViewModel() 
         habitRepository.getHabits(userId)
     }
 
+    // Método que calcula la cantidad de hábitos completados y no completados por día de la semana
     fun calculateHabitsCompletion(habits: List<Habit>): Pair<List<Float>, List<Float>> {
         val completed = FloatArray(7)
         val notCompleted = FloatArray(7)
@@ -42,6 +43,7 @@ class StatsViewModel(private val habitRepository: HabitRepository): ViewModel() 
         return completed.toList() to notCompleted.toList()
     }
 
+    // Método que ajusta el índice del día de la semana para que empiece en 0 (lunes) y termine en 6 (domingo)
     private fun adjustDayOfWeekIndex(dayOfWeek: Int): Int {
         return if (dayOfWeek == Calendar.SUNDAY) 6 else dayOfWeek - 2
     }

@@ -51,6 +51,7 @@ class HabitAdapter(private var habits: MutableList<Habit>,
             onDeleteClicked(habit, position)
         }
 
+        // Lógica para marcar como completado mediante un listener
         holder.checkBoxCompleted.setOnCheckedChangeListener { _, isChecked ->
             habits[position].completions[currentDate] = isChecked
             onCompletedClicked(habits[position], isChecked)
@@ -76,6 +77,7 @@ class HabitAdapter(private var habits: MutableList<Habit>,
         notifyItemRemoved(position)
     }
 
+    // Función para obtener la fecha actual en formato yyyy-MM-dd
      fun getTodayDateString(): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return formatter.format(Calendar.getInstance().time)

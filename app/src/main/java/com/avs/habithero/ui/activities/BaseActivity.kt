@@ -6,6 +6,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Locale
 
+/**
+ * Clase base para las actividades de la aplicación
+ *
+ * Se ha sobrescrito el método attachBaseContext para poder cambiar el idioma de la aplicación
+ */
 open class BaseActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
@@ -17,6 +22,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    // Actualiza el idioma de la aplicación y guarda la configuración en las preferencias compartidas
     private fun updateLocale(context: Context): Context {
         val sharedPreferences = context.getSharedPreferences("Settings", MODE_PRIVATE)
         val language = sharedPreferences.getString("My_Lang", Locale.getDefault().language)

@@ -46,20 +46,6 @@ class AuthRepository {
         return result
     }
 
-    fun signUpWithGoogle(credential: AuthCredential): LiveData<Result<Boolean>> {
-        val result = MutableLiveData<Result<Boolean>>()
-
-        auth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                result.value = Result.success(true)
-            } else {
-                result.value =
-                    Result.failure(task.exception ?: Exception("An unknown error occurred"))
-            }
-        }
-        return result
-    }
-
     private fun saveUserData(user: User, result: MutableLiveData<Result<Boolean>>) {
         val userData = hashMapOf(
             "userId" to user.userId,

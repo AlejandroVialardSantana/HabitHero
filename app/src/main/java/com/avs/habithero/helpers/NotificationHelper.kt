@@ -17,6 +17,8 @@ import java.util.Calendar
 import kotlin.math.abs
 
 object NotificationHelper {
+
+    // Notificar al usuario de un hábito
     fun createNotification(context: Context, habitTitle: String) {
         val channelId = "habit_reminder_channel"
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -60,6 +62,7 @@ object NotificationHelper {
         Log.d("NotificationHelper", "Alarms reprogrammed")
     }
 
+    // Guardar la alarma en las preferencias
     private fun scheduleAlarmFromPreferences(context: Context, habitId: String, dayIndex: Int, time: String) {
         val sharedPreferences = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
         val title = sharedPreferences.getString("habit_" + habitId + "_title_" + dayIndex, "Reminder");
@@ -75,6 +78,7 @@ object NotificationHelper {
             set(Calendar.DAY_OF_WEEK, dayIndex + 2)
         }
 
+        // Si la alarma ya pasó, programarla para la próxima semana
         if (calendar.before(now)) {
             calendar.add(Calendar.WEEK_OF_YEAR, 1);
         }

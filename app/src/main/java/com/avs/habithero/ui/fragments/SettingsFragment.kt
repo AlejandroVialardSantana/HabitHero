@@ -49,6 +49,7 @@ class SettingsFragment: Fragment() {
         _binding = null
     }
 
+    // Método que muestra un diálogo para cambiar el idioma de la aplicación
     private fun changeLanguage() {
         val languages = resources.getStringArray(R.array.languages)
         val languageCodes = resources.getStringArray(R.array.language_codes)
@@ -66,6 +67,7 @@ class SettingsFragment: Fragment() {
         savePreferences(languageCode)
     }
 
+    // Método que guarda el idioma seleccionado en las preferencias compartidas
     private fun savePreferences(languageCode: String) {
         val sharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
