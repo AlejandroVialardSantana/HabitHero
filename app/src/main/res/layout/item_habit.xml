@@ -24,6 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#d2d2d2"
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -37,41 +38,38 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Habit Name"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:text="Habit Name" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="@string/time" />
+                    android:text="@string/time"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/chronometerIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_time"
                 android:layout_marginStart="8dp"
-                />
+                android:src="@drawable/ic_time" />
 
             <ImageView
                 android:id="@+id/editHabit"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_edit"
                 android:layout_marginStart="8dp"
-                />
+                android:src="@drawable/ic_edit" />
 
             <ImageView
                 android:id="@+id/deleteHabit"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_delete"
                 android:layout_marginStart="8dp"
-                />
+                android:src="@drawable/ic_delete" />
 
         </LinearLayout>
 

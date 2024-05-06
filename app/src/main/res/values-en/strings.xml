@@ -32,7 +32,7 @@
     <!-- Home Fragment -->
     <string name="welcome_message">Welcome to HabitHero!</string>
     <string name="sub_welcome_message">Start by adding the habits you want to fulfill</string>
-    <string name="hello">Hello</string>
+    <string name="hello">Hello %1$s</string>
 
     <!-- Settings Fragment -->
     <string name="change_language">Change language</string>
@@ -75,4 +75,7 @@
     <!-- Habit BarChart -->
     <string name="completed">Completed</string>
     <string name="incompleted">No completed</string>
+
+    <!-- Allt text -->
+    <string name="all">Todos</string>
 </resources>

@@ -18,6 +18,16 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="habit_types_spinner">
+        <item>All</item>
+        <item>Sport</item>
+        <item>Study</item>
+        <item>Reading</item>
+        <item>Work</item>
+        <item>Music</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="habit_frequency">
         <item>Daily</item>
         <item>Weekly</item>

@@ -50,13 +50,14 @@ class HomeFragment: Fragment() {
         val navController = findNavController()
 
         binding.loading.visibility = View.VISIBLE
-        binding.welcomeMessage.visibility = View.INVISIBLE
-        binding.subWelcomeMessage.visibility = View.INVISIBLE
-        binding.habitsRecyclerView.visibility = View.INVISIBLE
-        binding.addHabit.visibility = View.INVISIBLE
+        binding.welcomeMessage.visibility = View.GONE
+        binding.subWelcomeMessage.visibility = View.GONE
+        binding.habitsRecyclerView.visibility = View.GONE
+        binding.addHabit.visibility = View.GONE
+        binding.textView3.visibility = View.GONE
 
         authViewModel.getUsername().observe(viewLifecycleOwner) { username ->
-            binding.username.text = username
+            binding.textView3.text = getString(R.string.hello, username)
         }
 
         binding.addHabit.setOnClickListener {
@@ -96,13 +97,11 @@ class HomeFragment: Fragment() {
             binding.subWelcomeMessage.visibility = View.VISIBLE
             binding.habitsRecyclerView.visibility = View.GONE
             binding.textView3.visibility = View.GONE
-            binding.username.visibility = View.GONE
         } else {
             binding.welcomeMessage.visibility = View.GONE
             binding.subWelcomeMessage.visibility = View.GONE
             binding.habitsRecyclerView.visibility = View.VISIBLE
             binding.textView3.visibility = View.VISIBLE
-            binding.username.visibility = View.VISIBLE
         }
     }
 
